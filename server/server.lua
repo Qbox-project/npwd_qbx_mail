@@ -32,7 +32,6 @@ lib.callback.register('npwd:qbx_mail:updateButton', function(source, id)
 end)
 
 RegisterNetEvent('qb-phone:server:sendNewMail', function(mailData)
-    local source = source
     local player = exports.qbx_core:GetPlayer(source)
 	local mailid = GenerateMailId()
     if mailData.button == nil then
@@ -49,7 +48,7 @@ RegisterNetEvent('qb-phone:server:sendNewMail', function(mailData)
 		read = 0,
 		date = os.time() * 1000
 	}
-	TriggerClientEvent('npwd:qbx_mail:newMail', source, newMail)
+	TriggerClientEvent('npwd:qbx_mail:newMail', player.PlayerData.source, newMail)
 end)
 
 RegisterNetEvent('qb-phone:server:sendNewMailToOffline', function(citizenid, mailData)
