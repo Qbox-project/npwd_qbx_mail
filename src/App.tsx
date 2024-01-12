@@ -1,17 +1,15 @@
 import React from 'react';
-import { NuiProvider } from 'react-fivem-hooks';
-import { useHistory } from 'react-router-dom';
-import styled from 'styled-components';
-import { Header } from './styles/header.styles';
+import styled from '@emotion/styled';
 import { IPhoneSettings } from '@project-error/npwd-types';
 import { i18n } from 'i18next';
-import { Theme, StyledEngineProvider, ThemeProvider, IconButton, Typography } from '@mui/material';
-import MailList from './components/MailList';
+import { Theme, StyledEngineProvider } from '@mui/material';
 import { RecoilEnv, RecoilRoot } from 'recoil';
-import MailModal from './components/MailModal';
-import { PhoneSnackbar } from './snackbar/PhoneSnackbar';
+import Header from './components/Header';
 import SnackbarProvider from './snackbar/SnackbarProvider';
-import { ArrowBack } from '@mui/icons-material';
+import { theme } from './app.theme';
+import MailModal from './components/MailModal';
+import MailList from './components/MailList';
+import { NuiProvider } from 'fivem-nui-react-lib';
 
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
@@ -26,7 +24,7 @@ const Container = styled.div<{ isDarkMode: any }>`
   ${({ isDarkMode }) =>
     isDarkMode &&
     `
-    background-color: rgb(23 23 23 / 1);
+    background-color: #212121;
   `}
 `;
 interface AppProps {
@@ -36,42 +34,27 @@ interface AppProps {
 }
 
 const App = (props: AppProps) => {
-  const history = useHistory();
-  const isDarkMode = props.theme.palette.mode === 'dark';
+  const isDarkMode = true;
 
   return (
-    <RecoilRoot>
+    <StyledEngineProvider injectFirst>
       <SnackbarProvider>
-        <StyledEngineProvider injectFirst>
-          <ThemeProvider theme={props.theme}>
-            <PhoneSnackbar />
-            <Container isDarkMode={isDarkMode}>
-              <Header>
-                <IconButton
-                  sx={{ paddingLeft: '1.5rem', '&:hover': { backgroundColor: 'transparent' } }}
-                  color='default'
-                  onClick={() => history.goBack()}
-                >
-                  <ArrowBack />
-                </IconButton>
-                <Typography fontSize={24} color={isDarkMode ? 'white' : 'black'} fontWeight='bold'>
-                  Mail
-                </Typography>
-              </Header>
-              <MailModal />
-              <MailList isDarkMode={isDarkMode} />
-            </Container>
-          </ThemeProvider>
-        </StyledEngineProvider>
+        <Container isDarkMode={isDarkMode}>
+          <Header />
+          <MailModal />
+          <MailList isDarkMode={true} />
+        </Container>
       </SnackbarProvider>
-    </RecoilRoot>
+    </StyledEngineProvider>
   );
 };
 
-const WithProviders: React.FC<AppProps> = (props) => (
-  <NuiProvider>
-    <App {...props} />
-  </NuiProvider>
-);
-
-export default WithProviders;
+export default function WithProviders(props: AppProps) {
+  return (
+    <RecoilRoot override key='npwd_qbx_mail'>
+      <NuiProvider resource='npwd_qbx_mail'>
+        <App {...props} />
+      </NuiProvider>
+    </RecoilRoot>
+  );
+}

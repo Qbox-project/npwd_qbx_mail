@@ -8,7 +8,7 @@ export const PhoneSnackbar: React.FC = () => {
 
   return (
     <Snackbar
-      autoHideDuration={alert?.duration ?? 3000}
+      autoHideDuration={3000}
       open={isOpen}
       sx={{
         display: 'flex',

@@ -1,4 +1,4 @@
-import { useSetMail } from '../atoms/mail-atoms';
+import { useSetMail } from '../atoms/mail-atoms'
 import { useCallback } from 'react';
 import { Mail } from '../types/mail';
 
@@ -16,16 +16,17 @@ export const useMailActions = (): UseMailActionsValue => {
     (id) => {
       setMail((curMail) => {
         const newMail = curMail.map((mail) => {
-          if (mail.mailid === id) {
-            return { ...mail, read: 1 };
-          }
-          return mail;
-        });
+            if (mail.mailid === id) {
+                return { ...mail, read: 1 };
+            }
+            return mail;
+            }
+        );
         return newMail;
       });
     },
     [setMail],
-  );
+  )
 
   const newMail = useCallback(
     (mail: Mail) => {

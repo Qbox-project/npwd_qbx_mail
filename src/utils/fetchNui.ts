@@ -8,25 +8,27 @@
 import { isEnvBrowser } from './misc';
 
 async function fetchNui<T = any, D = any>(eventName: string, data?: D, mockResp?: T): Promise<T> {
-  const options = {
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: JSON.stringify(data),
-  };
+	const options = {
+		method: 'post',
+		headers: {
+			'Content-Type': 'application/json; charset=UTF-8',
+		},
+		body: JSON.stringify(data),
+	};
+	
+	if (isEnvBrowser() && mockResp) {
+		return mockResp;
+	}
 
-  if (isEnvBrowser() && mockResp) {
-    return mockResp;
-  }
 
-  const resourceName = 'npwd_qbx_mail';
-
-  const resp = await fetch(`https://${resourceName}/${eventName}`, options);
-
-  const responseObj = await resp.json();
-
-  return responseObj;
+	const resourceName = "npwd_qbx_mail";
+	
+	const resp = await fetch(`https://${resourceName}/${eventName}`, options);
+	
+	const responseObj = await resp.json();
+	
+	
+	return responseObj;
 }
 
 export default fetchNui;

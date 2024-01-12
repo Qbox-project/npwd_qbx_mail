@@ -25,7 +25,7 @@ export const useMailAPI = (): MailAPIValue => {
       await fetchNui<ServerPromiseResp>('npwd:qbx_mail:updateRead', mailid);
       updateReadState(mailid);
     },
-    [updateReadState],
+    [updateReadState]
   );
 
   const deleteMail = useCallback(
@@ -46,15 +46,15 @@ export const useMailAPI = (): MailAPIValue => {
         type: 'success',
       });
     },
-    [addAlert, deleteLocalMail],
+    [addAlert, deleteLocalMail]
   );
 
   const updateMailButton = useCallback(
     async ({ mailid, button }: updateMailButtonParams) => {
       const resp = await fetchNui<ServerPromiseResp>('npwd:qbx_mail:updateButton', {
-        mailid,
-        button,
-      });
+          mailid,
+          button,
+        });
       if (resp.status !== 'ok') {
         return addAlert({
           message: 'Failed to accept mail',
@@ -68,7 +68,7 @@ export const useMailAPI = (): MailAPIValue => {
         type: 'success',
       });
     },
-    [addAlert, updateLocalButton],
+    [addAlert, updateLocalButton]
   );
 
   return { updateRead, deleteMail, updateMailButton };

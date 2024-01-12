@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Box, List, ListItem, Typography } from '@mui/material';
 import { useMailsValue, useSetSelectedMail, useSetModalVisible } from '../atoms/mail-atoms';
 import { Mail } from '../types/mail';
 import { useMailAPI } from '../hooks/useMailAPI';
-import { useNuiEvent } from 'react-fivem-hooks';
+import { useNuiEvent } from 'fivem-nui-react-lib';
 import { useMailActions } from '../hooks/useMailActions';
-import Chip from '@mui/material/Chip';
 import { MAIL_APP_TEXT_COLOR } from '../app.theme';
 
 const MailList = ({ isDarkMode }: { isDarkMode: boolean }) => {
@@ -15,13 +14,11 @@ const MailList = ({ isDarkMode }: { isDarkMode: boolean }) => {
   const { updateRead } = useMailAPI();
   const { newMail } = useMailActions();
 
-  const { data } = useNuiEvent<Mail[]>({ event: 'npwd:qbx_mail:newMail' });
-
-  useEffect(() => {
+  useNuiEvent<Mail[]>('mail', 'newMail', (data) => {
     if (data) {
       newMail(data[0]);
     }
-  }, [data]);
+  });
 
   const handleMailModal = (mail: Mail) => {
     if (!mail.read) {
@@ -45,13 +42,13 @@ const MailList = ({ isDarkMode }: { isDarkMode: boolean }) => {
   if (!mails || mails.length === 0) {
     return (
       <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        flexDirection="column"
-        height="100%"
+        display='flex'
+        justifyContent='center'
+        alignItems='center'
+        flexDirection='column'
+        height='100%'
       >
-        <Typography variant="h6" style={{ fontWeight: 300, color: MAIL_APP_TEXT_COLOR }}>
+        <Typography variant='h6' style={{ fontWeight: 300, color: MAIL_APP_TEXT_COLOR }}>
           You have no mail
         </Typography>
       </Box>
@@ -62,29 +59,18 @@ const MailList = ({ isDarkMode }: { isDarkMode: boolean }) => {
     <List disablePadding>
       {mails.map((mail) => (
         <ListItem
-          sx={{
-            background:
-              mail.read === 0
-                ? isDarkMode
-                  ? 'rgb(255 255 255 / 8%)'
-                  : 'rgb(0 0 0 / 6%)'
-                : isDarkMode
-                ? 'default'
-                : 'default',
-          }}
           key={mail.mailid}
-          button
           divider
           onClick={() => handleMailModal(mail)}
         >
           {mail.read === 0 ? (
-            <Chip
-              label="new"
-              size="small"
+            <Box
               sx={{
+                bgcolor: '#4260f5',
+                borderRadius: '10px',
+                minWidth: '8px',
+                minHeight: '8px',
                 marginRight: '10px',
-                background: '#1976d2',
-                color: 'white',
               }}
             />
           ) : (
@@ -108,17 +94,14 @@ const MailList = ({ isDarkMode }: { isDarkMode: boolean }) => {
               }}
             >
               <Typography
-                sx={{
-                  fontWeight: mail.read === 0 ? '600' : '500',
-                  color: isDarkMode ? '#fff' : '#000',
-                }}
+                sx={{ fontWeight: '500', color: isDarkMode ? '#fff' : '#000' }}
               >
                 {mail.sender}
               </Typography>
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Typography
                   sx={{
-                    color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : '#424242',
+                    color: isDarkMode ? '#dedede' : '#424242',
                     fontSize: '13px',
                   }}
                 >
@@ -126,12 +109,7 @@ const MailList = ({ isDarkMode }: { isDarkMode: boolean }) => {
                 </Typography>
               </Box>
             </Box>
-            <Typography
-              sx={{
-                fontWeight: mail.read === 0 ? '600' : '500',
-                color: isDarkMode ? '#fff' : '#000',
-              }}
-            >
+            <Typography sx={{ color: isDarkMode ? '#fff' : '#000' }}>
               {mail.subject}
             </Typography>
           </Box>

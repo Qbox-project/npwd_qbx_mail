@@ -1,13 +1,13 @@
-local function GenerateMailId()
+local function generateMailId()
     return math.random(111111, 999999)
 end
 
-lib.callback.register("npwd:qbx_mail:getMail", function(source)
+lib.callback.register('npwd:qbx_mail:getMail', function(source)
 	local player  = exports.qbx_core:GetPlayer(source)
 	local mailResults = MySQL.query.await('SELECT `citizenid`, `sender`, `subject`, `message`, `read`, `mailid`, `date`, `button` FROM player_mails WHERE citizenid = ? ORDER BY date DESC', {player.PlayerData.citizenid})
 
 	for i = 1, #mailResults do
-		if mailResults[i].button then -- qb-phone used replace button with "" when its used, so checking if thats the length then setting to nil for ui
+		if mailResults[i].button then -- qb-phone used replace button with '' when its used, so checking if thats the length then setting to nil for ui
 			mailResults[i].button = #mailResults[i].button == 2 and nil or json.decode(mailResults[i].button)
 		end
     end
@@ -15,8 +15,7 @@ lib.callback.register("npwd:qbx_mail:getMail", function(source)
 end)
 
 lib.callback.register('npwd:qbx_mail:updateRead', function(source, data)
-	local src = source
-	local player = exports.qbx_core:GetPlayer(src)
+	local player = exports.qbx_core:GetPlayer(source)
 	MySQL.update('UPDATE player_mails SET `read` = 1 WHERE mailid = ? AND citizenid = ?', {data, player.PlayerData.citizenid})
 	return true
 end)
@@ -32,18 +31,19 @@ lib.callback.register('npwd:qbx_mail:updateButton', function(source, id)
 end)
 
 RegisterNetEvent('qb-phone:server:sendNewMail', function(mailData)
-    local player = exports.qbx_core:GetPlayer(source)
-	local mailid = GenerateMailId()
+	local src = source
+	local player = exports.qbx_core:GetPlayer(src)
+	local mailId = generateMailId()
     if mailData.button == nil then
-        MySQL.insert('INSERT INTO player_mails (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`) VALUES (?, ?, ?, ?, ?, ?)', {player.PlayerData.citizenid, mailData.sender, mailData.subject, mailData.message, mailid, 0})
+        MySQL.insert('INSERT INTO player_mails (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`) VALUES (?, ?, ?, ?, ?, ?)', {player.PlayerData.citizenid, mailData.sender, mailData.subject, mailData.message, mailId, 0})
     else
-        MySQL.insert('INSERT INTO player_mails (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`, `button`) VALUES (?, ?, ?, ?, ?, ?, ?)', {player.PlayerData.citizenid, mailData.sender, mailData.subject, mailData.message, mailid, 0, json.encode(mailData.button)})
+        MySQL.insert('INSERT INTO player_mails (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`, `button`) VALUES (?, ?, ?, ?, ?, ?, ?)', {player.PlayerData.citizenid, mailData.sender, mailData.subject, mailData.message, mailId, 0, json.encode(mailData.button)})
     end
 	local newMail = {
 		sender = mailData.sender,
 		subject = mailData.subject,
 		message = mailData.message,
-		mailid = mailid,
+		mailid = mailId,
 		button = mailData.button,
 		read = 0,
 		date = os.time() * 1000
@@ -54,18 +54,18 @@ end)
 RegisterNetEvent('qb-phone:server:sendNewMailToOffline', function(citizenid, mailData)
     local player = exports.qbx_core:GetPlayerByCitizenId(citizenid)
     if player then
-        local src = player.PlayerData.source
-		local mailid = GenerateMailId()
+		local src = player.PlayerData.source
+		local mailId = generateMailId()
         if mailData.button == nil or not next(mailData.button) then
-            MySQL.insert('INSERT INTO player_mails (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`) VALUES (?, ?, ?, ?, ?, ?)', {player.PlayerData.citizenid, mailData.sender, mailData.subject, mailData.message, mailid, 0})
+            MySQL.insert('INSERT INTO player_mails (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`) VALUES (?, ?, ?, ?, ?, ?)', {player.PlayerData.citizenid, mailData.sender, mailData.subject, mailData.message, mailId, 0})
         else
-            MySQL.insert('INSERT INTO player_mails (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`, `button`) VALUES (?, ?, ?, ?, ?, ?, ?)', {player.PlayerData.citizenid, mailData.sender, mailData.subject, mailData.message, mailid, 0, json.encode(mailData.button)})
+            MySQL.insert('INSERT INTO player_mails (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`, `button`) VALUES (?, ?, ?, ?, ?, ?, ?)', {player.PlayerData.citizenid, mailData.sender, mailData.subject, mailData.message, mailId, 0, json.encode(mailData.button)})
         end
 		local newMail = {
 			sender = mailData.sender,
 			subject = mailData.subject,
 			message = mailData.message,
-			mailid = mailid,
+			mailid = mailId,
 			button = mailData.button,
 			read = 0,
 			date = os.time() * 1000
@@ -73,9 +73,13 @@ RegisterNetEvent('qb-phone:server:sendNewMailToOffline', function(citizenid, mai
 		TriggerClientEvent('npwd:qbx_mail:newMail', src, newMail)
     else
         if mailData.button == nil then
-            MySQL.insert('INSERT INTO player_mails (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`) VALUES (?, ?, ?, ?, ?, ?)', {citizenid, mailData.sender, mailData.subject, mailData.message, GenerateMailId(), 0})
+            MySQL.insert('INSERT INTO player_mails (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`) VALUES (?, ?, ?, ?, ?, ?)', {citizenid, mailData.sender, mailData.subject, mailData.message, generateMailId(), 0})
         else
-            MySQL.insert('INSERT INTO player_mails (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`, `button`) VALUES (?, ?, ?, ?, ?, ?, ?)', {citizenid, mailData.sender, mailData.subject, mailData.message, GenerateMailId(), 0, json.encode(mailData.button)})
+            MySQL.insert('INSERT INTO player_mails (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`, `button`) VALUES (?, ?, ?, ?, ?, ?, ?)', {citizenid, mailData.sender, mailData.subject, mailData.message, generateMailId(), 0, json.encode(mailData.button)})
         end
     end
+end)
+
+lib.addCommand('testemail', {help = 'Sends a test email to your phone', restricted = 'group.admin'}, function(source)
+    TriggerClientEvent('npwd_qbx_mail:testMail', source)
 end)

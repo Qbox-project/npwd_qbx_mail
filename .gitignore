@@ -4,3 +4,5 @@ dist
 web
 release
 .vscode/settings.json
+.prettierrc
+.prettierignore
