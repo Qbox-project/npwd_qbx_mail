@@ -7,24 +7,18 @@ version '0.1.0'
 
 client_script 'client/client.lua'
 
-shared_scripts {
-    '@ox_lib/init.lua',
-    '@qbx_core/shared/locale.lua',
-    'locales/en.lua',
-    'locales/*.lua',
-}
+shared_script '@ox_lib/init.lua'
 
 server_script {
     '@oxmysql/lib/MySQL.lua',
     'server/server.lua',
 }
 
-
 ui_page 'web/dist/index.html'
 
 files {
-    'web/dist/index.html',
     'web/dist/**/*',
+    'locales/*.json'
 }
 
 lua54 'yes'

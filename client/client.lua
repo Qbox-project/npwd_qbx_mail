@@ -1,3 +1,5 @@
+lib.locale()
+
 RegisterNUICallback('npwd:qbx_mail:getMail', function(_, cb)
 	local mail = lib.callback.await('npwd:qbx_mail:getMail', false)
 	cb({ status = 'ok', data = mail })
@@ -20,12 +22,12 @@ RegisterNUICallback('npwd:qbx_mail:updateButton', function(data, cb)
 end)
 
 RegisterNetEvent('npwd:qbx_mail:newMail', function(data)
-	exports.npwd:sendNPWDMessage({type = 'npwd:qbx_mail:newMail', payload = {data}})
-	SetTimeout(3500, function ()
+	exports.npwd:sendNPWDMessage('npwd_qbx_mail', 'newMail', {data})
+	SetTimeout(3500, function()
 		exports.npwd:createNotification({
 			notisId = 'npwd:newmail',
 			appId = 'mail',
-			content = Lang:t('newmail'),
+			content = locale('newmail'),
 			keepOpen = false,
 			duration = 5000,
 			path = '/mail',

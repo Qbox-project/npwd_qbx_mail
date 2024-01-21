@@ -1,15 +1,16 @@
 import React from 'react';
-import { MAIL_APP_PRIMARY_COLOR, MAIL_APP_TEXT_COLOR } from '../app.theme';
-import { Typography, Box } from '@mui/material';
+import { Typography, Box, useTheme } from '@mui/material';
 
 const Header = () => {
+  const theme = useTheme();
+
   return (
     <Box
       px={2}
       pt={2}
-      sx={{ width: '100%', textAlign: 'left', backgroundColor: MAIL_APP_PRIMARY_COLOR }}
+      sx={{ width: '100%', textAlign: 'left', backgroundColor: theme.palette.primary.main }}
     >
-      <Typography sx={{ color: MAIL_APP_TEXT_COLOR }} paragraph variant={'h5'}>
+      <Typography sx={{ color: theme.palette.primary.contrastText }} paragraph variant={'h5'}>
         Mail
       </Typography>
     </Box>

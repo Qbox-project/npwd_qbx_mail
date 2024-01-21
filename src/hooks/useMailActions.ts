@@ -1,4 +1,4 @@
-import { useSetMail } from '../atoms/mail-atoms'
+import { useSetMail } from '../atoms/mail-atoms';
 import { useCallback } from 'react';
 import { Mail } from '../types/mail';
 
@@ -13,7 +13,7 @@ export const useMailActions = (): UseMailActionsValue => {
   const setMail = useSetMail();
 
   const updateReadState = useCallback(
-    (id) => {
+    (id: number) => {
       setMail((curMail) => {
         const newMail = curMail.map((mail) => {
             if (mail.mailid === id) {
@@ -39,7 +39,7 @@ export const useMailActions = (): UseMailActionsValue => {
   );
 
   const updateLocalButton = useCallback(
-    (id) => {
+    (id: number) => {
       setMail((curMail) => {
         const targetIndex = curMail.findIndex((storedMail) => storedMail.mailid === id);
         const newMailArray = [...curMail];
@@ -51,7 +51,7 @@ export const useMailActions = (): UseMailActionsValue => {
   );
 
   const deleteLocalMail = useCallback(
-    (id) => {
+    (id: number) => {
       setMail((curMail) => [...curMail].filter((mail) => mail.mailid !== id));
     },
     [setMail],

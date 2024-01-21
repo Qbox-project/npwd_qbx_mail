@@ -1,6 +1,6 @@
 import React from 'react';
 import { useModalVisible, useSelectedMail } from '../atoms/mail-atoms';
-import { Button,  Paper, Typography, Container, Box, Divider, useTheme, Slide } from '@mui/material';
+import { Button, Paper, Typography, Container, Box, Divider, useTheme, Slide } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { dateString } from '../utils/misc';
 import { useMailAPI } from '../hooks/useMailAPI';

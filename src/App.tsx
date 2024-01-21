@@ -1,19 +1,18 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { IPhoneSettings } from '@project-error/npwd-types';
+import { IPhoneSettings } from '@npwd/types';
 import { i18n } from 'i18next';
 import { Theme, StyledEngineProvider } from '@mui/material';
 import { RecoilEnv, RecoilRoot } from 'recoil';
 import Header from './components/Header';
 import SnackbarProvider from './snackbar/SnackbarProvider';
-import { theme } from './app.theme';
 import MailModal from './components/MailModal';
 import MailList from './components/MailList';
-import { NuiProvider } from 'fivem-nui-react-lib';
+import ThemeSwitchProvider from './ThemeSwitchProvider';
 
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
-const Container = styled.div<{ isDarkMode: any }>`
+const Container = styled.div<{ isDarkMode: boolean }>`
   flex: 1;
   display: flex;
   box-sizing: border-box;
@@ -34,17 +33,19 @@ interface AppProps {
 }
 
 const App = (props: AppProps) => {
-  const isDarkMode = true;
+  const isDarkMode = props.theme.palette.mode === 'dark';
 
   return (
     <StyledEngineProvider injectFirst>
-      <SnackbarProvider>
-        <Container isDarkMode={isDarkMode}>
-          <Header />
-          <MailModal />
-          <MailList isDarkMode={true} />
-        </Container>
-      </SnackbarProvider>
+      <ThemeSwitchProvider mode={props.theme.palette.mode}>
+        <SnackbarProvider>
+          <Container isDarkMode={isDarkMode}>
+            <Header />
+            <MailModal />
+            <MailList />
+          </Container>
+        </SnackbarProvider>
+      </ThemeSwitchProvider>
     </StyledEngineProvider>
   );
 };
@@ -52,9 +53,7 @@ const App = (props: AppProps) => {
 export default function WithProviders(props: AppProps) {
   return (
     <RecoilRoot override key='npwd_qbx_mail'>
-      <NuiProvider resource='npwd_qbx_mail'>
-        <App {...props} />
-      </NuiProvider>
+      <App {...props} />
     </RecoilRoot>
   );
 }

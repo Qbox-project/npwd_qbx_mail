@@ -1,29 +1,31 @@
 import React from 'react';
-import { Box, List, ListItem, Typography } from '@mui/material';
+import { Box, List, ListItem, Typography, useTheme } from '@mui/material';
 import { useMailsValue, useSetSelectedMail, useSetModalVisible } from '../atoms/mail-atoms';
 import { Mail } from '../types/mail';
 import { useMailAPI } from '../hooks/useMailAPI';
-import { useNuiEvent } from 'fivem-nui-react-lib';
 import { useMailActions } from '../hooks/useMailActions';
-import { MAIL_APP_TEXT_COLOR } from '../app.theme';
+import { useNuiEvent } from '../hooks/useNuiEvent';
 
-const MailList = ({ isDarkMode }: { isDarkMode: boolean }) => {
+const MailList = () => {
   const mails = useMailsValue();
+  const theme = useTheme();
+  const isDarkMode = theme.palette.mode === 'dark';
   const setMail = useSetSelectedMail();
   const setModalVisible = useSetModalVisible();
   const { updateRead } = useMailAPI();
   const { newMail } = useMailActions();
 
   useNuiEvent<Mail[]>('mail', 'newMail', (data) => {
-    if (data) {
-      newMail(data[0]);
-    }
+    if (!data) return;
+
+    newMail(data[0]);
   });
 
   const handleMailModal = (mail: Mail) => {
     if (!mail.read) {
       updateRead(mail.mailid);
     }
+
     setMail(mail);
     setModalVisible(true);
   };
@@ -48,7 +50,7 @@ const MailList = ({ isDarkMode }: { isDarkMode: boolean }) => {
         flexDirection='column'
         height='100%'
       >
-        <Typography variant='h6' style={{ fontWeight: 300, color: MAIL_APP_TEXT_COLOR }}>
+        <Typography variant='h6' style={{ fontWeight: 300, color: theme.palette.primary.contrastText }}>
           You have no mail
         </Typography>
       </Box>

@@ -1,13 +1,8 @@
 import App from "./src/App";
 import { MailIcon, NotificationIcon } from "./icon";
-import { theme } from "./src/app.theme";
-
-interface Settings {
-  language: "en";
-}
 
 export const path = "/mail";
-export default (settings: Settings) => ({
+export default () => ({
   id: "mail",
   nameLocale: "Mail",
   color: "#fff",
@@ -15,6 +10,5 @@ export default (settings: Settings) => ({
   path,
   icon: MailIcon,
   app: App,
-  notificationIcon: NotificationIcon,
-  theme: theme,
+  notificationIcon: NotificationIcon
 });

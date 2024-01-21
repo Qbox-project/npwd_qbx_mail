@@ -2,8 +2,8 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import topLevelAwait from "vite-plugin-top-level-await";
 import federation from "@originjs/vite-plugin-federation";
-const packageJson = require("./package.json");
-const { dependencies, name } = packageJson;
+import packageJson from "./package.json";
+const { name } = packageJson;
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -20,7 +20,6 @@ export default defineConfig({
         "react-dom",
         "@emotion/react",
         "react-router-dom",
-        "fivem-nui-react-lib",
       ],
     }),
     topLevelAwait({
