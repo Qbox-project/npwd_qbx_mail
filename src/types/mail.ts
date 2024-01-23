@@ -25,5 +25,4 @@ export interface buttonContentInt {
         z: number;
     };
     }
-  }
-  
+}

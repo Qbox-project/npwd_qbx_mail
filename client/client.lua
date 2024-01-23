@@ -12,13 +12,13 @@ end)
 
 RegisterNUICallback('npwd:qbx_mail:deleteMail', function(data, cb)
 	local mailDeleted = lib.callback.await('npwd:qbx_mail:deleteMail', false, data)
-	cb({ status = mailDeleted and 'ok' or 'error' })
+	cb({ status = (not mailDeleted or mailDeleted.affectedRows == 0) and 'error' or 'ok' })
 end)
 
 RegisterNUICallback('npwd:qbx_mail:updateButton', function(data, cb)
 	TriggerEvent(data.button.buttonEvent, data.button.buttonData)
 	local buttonUpdated = lib.callback.await('npwd:qbx_mail:updateButton', false, data.mailid)
-	cb({ status = buttonUpdated and 'ok' or 'error' })
+	cb({ status = buttonUpdated == 0 and 'error' or 'ok' })
 end)
 
 RegisterNetEvent('npwd:qbx_mail:newMail', function(data)
