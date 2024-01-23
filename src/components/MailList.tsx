@@ -15,7 +15,7 @@ const MailList = () => {
   const { updateRead } = useMailAPI();
   const { newMail } = useMailActions();
 
-  useNuiEvent<Mail[]>('mail', 'newMail', (data) => {
+  useNuiEvent<Mail[]>('npwd_qbx_mail', 'newMail', (data) => {
     if (!data) return;
 
     newMail(data[0]);
