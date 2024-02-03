@@ -7,7 +7,7 @@ end)
 
 RegisterNUICallback('npwd:qbx_mail:updateRead', function(data, cb)
 	lib.callback.await('npwd:qbx_mail:updateRead', false, data)
-	cb({})
+	cb({ status = 'ok' })
 end)
 
 RegisterNUICallback('npwd:qbx_mail:deleteMail', function(data, cb)

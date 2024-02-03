@@ -15,19 +15,17 @@ async function fetchNui<T = any, D = any>(eventName: string, data?: D, mockResp?
 		},
 		body: JSON.stringify(data),
 	};
-	
+
 	if (isEnvBrowser() && mockResp) {
 		return mockResp;
 	}
 
-
 	const resourceName = "npwd_qbx_mail";
-	
+
 	const resp = await fetch(`https://${resourceName}/${eventName}`, options);
-	
+
 	const responseObj = await resp.json();
-	
-	
+
 	return responseObj;
 }
 
