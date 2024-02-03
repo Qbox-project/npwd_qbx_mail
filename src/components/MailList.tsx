@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, List, ListItem, Typography, useTheme } from '@mui/material';
-import { useMailsValue, useSetSelectedMail, useSetModalVisible } from '../atoms/mail-atoms';
+import { useMailsValue, useSetSelectedMail, useSetModalVisible, useSetMail, getMailItems } from '../atoms/mail-atoms';
 import { Mail } from '../types/mail';
 import { useMailAPI } from '../hooks/useMailAPI';
 import { useMailActions } from '../hooks/useMailActions';
@@ -10,10 +10,17 @@ const MailList = () => {
   const mails = useMailsValue();
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
+  const setMails = useSetMail();
   const setMail = useSetSelectedMail();
   const setModalVisible = useSetModalVisible();
   const { updateRead } = useMailAPI();
   const { newMail } = useMailActions();
+
+  useEffect(() => {
+    getMailItems()
+      .then(val => setMails(val))
+      .catch(console.error);
+  });
 
   useNuiEvent<Mail[]>('npwd_qbx_mail', 'newMail', (data) => {
     if (!data) return;

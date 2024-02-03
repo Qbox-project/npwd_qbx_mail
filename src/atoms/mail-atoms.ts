@@ -8,27 +8,29 @@ import { recoilPersist } from 'recoil-persist';
 
 const { persistAtom } = recoilPersist();
 
+export const getMailItems = async () => {
+  try {
+    const resp = await fetchNui<ServerPromiseResp<Mail[]>>('npwd:qbx_mail:getMail');
+    if (!resp.data) {
+      console.log('no response data');
+      return [];
+    }
+    return resp.data;
+  } catch (e) {
+    if (isEnvBrowser()) {
+      return MockMail;
+    }
+    console.error(e);
+    return [];
+  }
+}
+
 export const mailStates = {
   mailItems: atom({
     key: 'mailItem',
     default: selector<Mail[]>({
       key: 'defaultMailItems',
-      get: async () => {
-        try {
-          const resp = await fetchNui<ServerPromiseResp<Mail[]>>('npwd:qbx_mail:getMail');
-          if (!resp.data) {
-            console.log('no response data');
-            return [];
-          }
-          return resp.data;
-        } catch (e) {
-          if (isEnvBrowser()) {
-            return MockMail;
-          }
-          console.error(e);
-          return [];
-        }
-      },
+      get: getMailItems,
     }),
     effects_UNSTABLE: [persistAtom],
   }),
