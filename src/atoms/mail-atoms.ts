@@ -4,6 +4,9 @@ import { MockMail } from '../utils/constants';
 import { isEnvBrowser } from '../utils/misc';
 import fetchNui from '../utils/fetchNui';
 import { ServerPromiseResp } from '../types/common';
+import { recoilPersist } from 'recoil-persist';
+
+const { persistAtom } = recoilPersist();
 
 export const mailStates = {
   mailItems: atom({
@@ -27,14 +30,17 @@ export const mailStates = {
         }
       },
     }),
+    effects_UNSTABLE: [persistAtom],
   }),
   selectedMail: atom<Partial<Mail> | null>({
     key: 'selectedMail',
     default: null,
+    effects_UNSTABLE: [persistAtom],
   }),
   modalVisibile: atom({
     key: 'mailModalVisible',
     default: false,
+    effects_UNSTABLE: [persistAtom],
   }),
 };
 

@@ -59,7 +59,7 @@ const MailList = () => {
 
   return (
     <List disablePadding>
-      {mails.map((mail) => (
+      {mails.map((mail: Mail) => (
         <ListItem
           key={mail.mailid}
           divider
