@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Box, List, ListItem, Typography, useTheme } from '@mui/material';
+import { Box, List, ListItemButton, Typography, useTheme } from '@mui/material';
 import { useMailsValue, useSetSelectedMail, useSetModalVisible, useSetMail, getMailItems } from '../atoms/mail-atoms';
 import { Mail } from '../types/mail';
 import { useMailAPI } from '../hooks/useMailAPI';
@@ -67,7 +67,7 @@ const MailList = () => {
   return (
     <List disablePadding>
       {mails.map((mail: Mail) => (
-        <ListItem
+        <ListItemButton
           key={mail.mailid}
           divider
           onClick={() => handleMailModal(mail)}
@@ -122,7 +122,7 @@ const MailList = () => {
               {mail.subject}
             </Typography>
           </Box>
-        </ListItem>
+        </ListItemButton>
       ))}
     </List>
   );

@@ -3,17 +3,17 @@ import { useSnackbar } from '../snackbar/useSnackbar';
 import { useMailActions } from './useMailActions';
 import { ServerPromiseResp } from '../types/common';
 import fetchNui from '../utils/fetchNui';
-import { buttonContentInt } from '../types/mail';
+import { ButtonContent } from '../types/mail';
 
-interface updateMailButtonParams {
+interface UpdateMailButtonParams {
   mailid: number;
-  button: buttonContentInt;
+  button: ButtonContent;
 }
 
 interface MailAPIValue {
   updateRead: (mailid: number) => Promise<void>;
   deleteMail: (mailid: number) => Promise<void>;
-  updateMailButton: (data: updateMailButtonParams) => Promise<void>;
+  updateMailButton: (data: UpdateMailButtonParams) => Promise<void>;
 }
 
 export const useMailAPI = (): MailAPIValue => {
@@ -50,7 +50,7 @@ export const useMailAPI = (): MailAPIValue => {
   );
 
   const updateMailButton = useCallback(
-    async ({ mailid, button }: updateMailButtonParams) => {
+    async ({ mailid, button }: UpdateMailButtonParams) => {
       const resp = await fetchNui<ServerPromiseResp>('npwd:qbx_mail:updateButton', {
           mailid,
           button,

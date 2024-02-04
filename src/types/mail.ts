@@ -5,24 +5,11 @@ export interface Mail {
     mailid: number;
     read: number;
     date: number;
-    button?: buttonContentInt;
+    button?: ButtonContent;
 }
 
-export interface buttonContentInt {
+export interface ButtonContent {
     buttonEvent: string;
     enabled: boolean;
-    buttonData:{
-    dealer: string;
-    itemData: {
-        minrep: number;
-        item: string;
-    };
-    amount: number;
-    locationLabel: string;
-    coords: {
-        x: number;
-        y: number;
-        z: number;
-    };
-    }
+    buttonData?: any;
 }

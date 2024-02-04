@@ -112,12 +112,17 @@ const MailModal = () => {
               p={1}
               sx={{ display: 'flex', gap: '15px', justifyContent: 'center' }}
             >
-              {selectedMail.button !== undefined &&
-                selectedMail.button !== null && (
+              {selectedMail.button && (
                   <Button
                     color='success'
                     variant='contained'
                     onClick={handleSubmitButton}
+                    sx={{
+                      backgroundColor: `${theme.palette.success.main} !important`,
+                      '&:hover': {
+                        backgroundColor: `${theme.palette.success.dark} !important`,
+                      },
+                    }}
                   >
                     ACCEPT
                   </Button>
