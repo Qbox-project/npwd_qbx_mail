@@ -1,9 +1,9 @@
 import App from "./src/App";
 import { MailIcon, NotificationIcon } from "./icon";
 
-export const path = "/mail";
+export const path = "/npwd_qbx_mail";
 export default () => ({
-  id: "mail",
+  id: "npwd_qbx_mail",
   nameLocale: "Mail",
   color: "#fff",
   backgroundColor: "#333",

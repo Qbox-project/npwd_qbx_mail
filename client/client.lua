@@ -23,16 +23,15 @@ end)
 
 RegisterNetEvent('npwd:qbx_mail:newMail', function(data)
 	exports.npwd:sendNPWDMessage('npwd_qbx_mail', 'newMail', {data})
-	SetTimeout(3500, function()
-		exports.npwd:createNotification({
-			notisId = 'npwd:newmail',
-			appId = 'mail',
-			content = locale('newmail'),
-			keepOpen = false,
-			duration = 5000,
-			path = '/mail',
-		})
-	end)
+	Wait(100)
+	exports.npwd:createNotification({
+		notisId = 'npwd:newmail',
+		appId = 'npwd_qbx_mail',
+		content = locale('newmail'),
+		keepOpen = false,
+		duration = 5000,
+		path = '/npwd_qbx_mail',
+	})
 end)
 
 RegisterNetEvent('npwd_qbx_mail:testMail', function()
