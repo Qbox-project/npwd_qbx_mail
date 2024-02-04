@@ -8,7 +8,7 @@ lib.callback.register('npwd:qbx_mail:getMail', function(source)
 
 	for i = 1, #mailResults do
 		if mailResults[i].button then -- qb-phone used replace button with '' when its used, so checking if thats the length then setting to nil for ui
-			mailResults[i].button = #mailResults[i].button ~= 2 and json.decode(mailResults[i].button) or nil
+			mailResults[i].button = #mailResults[i].button ~= 0 and json.decode(mailResults[i].button) or nil
 		end
     end
 
