@@ -101,10 +101,10 @@ const MailModal = () => {
             <Divider />
             {selectedMail.message && (
               <Box
-                pl={1}
-                pt={'12px'}
-                sx={{ fontSize: '18px', height: '70%' }}
-                dangerouslySetInnerHTML={{ __html: sanitizedMessage }}
+              pl={1}
+              pt={'12px'}
+              sx={{ fontSize: '18px', height: '70%', overflowY: 'auto' }}
+              dangerouslySetInnerHTML={{ __html: sanitizedMessage }}
               />
             )}
             <Box
